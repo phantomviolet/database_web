@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Product Page</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>Product Page</h1>
+        <form action = "/main/product/" method = "POST">
+            <input type = "text" name = "name">
+            <select name = "category">
+                <option value = "">전체</option>
+                <option value = "1">자재번호</option>
+                <option value = "2">도면번호</option>
+                <option value = "3">자재명</option>
+            </select>
+            <input type = "submit" value = "search">
+        </form>
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>자재번호</th>
+                    <th>도면번호</th>
+                    <th>자재명</th>
+                    <th>비고</th>
+                    <th>수량</th>
+                    <th>단가</th>
+                    </tr>
+            </thead>
+            <tbody>
+                {% for item in item %}
+                <tr>
+                    <td>{{  item.material_number  }}</td>
+                    <td>{{  item.blueprint_number  }}</td>
+                    <td>{{  item.material_name  }}</td>
+                    <td>{{  item.note  }}</td>
+                    <td>{{  item.quantity  }}</td>
+                    <td>{{  item.price  }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>
