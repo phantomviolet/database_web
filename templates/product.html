@@ -24,7 +24,6 @@
                     <th>자재명</th>
                     <th>비고</th>
                     <th>수량</th>
-                    <th>단가</th>
                     </tr>
             </thead>
             <tbody>
@@ -34,11 +33,11 @@
                     <td>{{  item.blueprint_number  }}</td>
                     <td>{{  item.material_name  }}</td>
                     <td>{{  item.note  }}</td>
-                    <td>{{  item.quantity  }}</td>
                     <td>{{  item.price  }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <li><a href="/main/">메인 페이지</a></li>
     </body>
 </html>

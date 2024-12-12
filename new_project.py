@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect
+from docx import Document
 import sqlite3
 
 tmp_material = {}
@@ -8,7 +9,6 @@ tmp_material = [
         'blueprint_number': i,
         'material_name': 'new_material',
         'note': '협의',
-        'quantity': 0,
         'price': 0,
     } for i in range(1, 11)
 ]
@@ -16,11 +16,11 @@ tmp_material = [
 tmp_company = {}
 tmp_company = [
     {
-        'company_number': i,
-        'company_name': 'new_company',
-        'company_address': 'new_address',
-        'company_phone': '010-1234-5678',
-        'company_email': 'new_email',
+        'company_ID': i,
+        'name': 'new_company',
+        'address': 'new_address',
+        'phone': '010-1234-5678',
+        'email': 'new_email',
     } for i in range(1, 11)
 ]
 
