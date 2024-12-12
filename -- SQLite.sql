@@ -49,3 +49,89 @@
 --     on delete cascade on update cascade,
 --     foreign key(mid) references material(mid) 
 --     on delete cascade on update cascade);
+
+-- insert into company (cname, address, callNumber, FAX)
+-- values('D', 'D_address', 'D_callNumber', 'D_FAX'),
+--     ('E', 'E_address', 'E_callNumber', 'E_FAX');
+
+-- insert into need (bid, mid)
+-- values
+--     (1, 645001014),
+--     (1, 645001015),
+--     (1, 645001016),
+--     (2, 645001017),
+--     (2, 645002023),
+--     (2, 645005004),
+--     (3, 645001001),
+--     (3, 645001002),
+--     (3, 645002001),
+--     (4, 645002002),
+--     (4, 645003002),
+--     (4, 645003003),
+--     (5, 645003004),
+--     (5, 645090339),
+--     (5, 645090340);
+
+
+-- SELECT material.mid, need.bid, mName, description
+-- from material, need
+-- where material.mid = need.mid;
+-- insert into blueprint (bName, cid)
+-- values('blueprint1', 1),
+--     ('blueprint2', 2),
+--     ('blueprint3', 3),
+--     ('blueprint4', 4),
+--     ('blueprint5', 5);
+-- DROP TABLE blueprint;
+-- CREATE TABLE blueprint(
+--     bid integer primary key autoincrement,
+--     bName text not null,
+--     cid integer not null,
+--     foreign key(cid) references company(id)
+-- );
+
+-- insert into blueprint (bName, cid)
+-- values('blueprint1', 1),
+--     ('blueprint2', 2),
+--     ('blueprint3', 3),
+--     ('blueprint4', 4),
+--     ('blueprint5', 5);
+-- SELECT need.mid, bid, material.mName, description, price
+-- from need, material
+-- where need.mid = material.mid;
+
+-- SELECT material.mid, need.mid
+-- from need, material
+-- WHERE need.mid = material.mid;
+-- CREATE TABLE need (
+--     bid integer,
+--     mid integer,
+--     primary key (bid, mid),
+--     foreign key(bid) references blueprint(bid) on delete cascade on update cascade,
+--     foreign key(mid) references material(mid) on delete cascade on update cascade
+-- );
+
+-- INSERT INTO need (bid, mid) VALUES
+-- (1, 645001014),
+-- (1, 645001015),
+-- (1, 645001016),
+-- (2, 645001017),
+-- (2, 645002023),
+-- (2, 645005004),
+-- (3, 655001001),
+-- (3, 655001002),
+-- (3, 655002001),
+-- (4, 655002002),
+-- (4, 655003002),
+-- (4, 655003003),
+-- (5, 655003004),
+-- (5, 655009339),
+-- (5, 655009340);
+
+-- SELECT material.mid, need.bid, mName, description
+-- FROM material, need
+-- WHERE material.mid = need.mid;
+
+SELECT material.mid, need.bid, mName, description
+FROM material, need
+WHERE material.mid = need.mid;

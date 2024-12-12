@@ -2,28 +2,30 @@ from flask import Flask, render_template, request, redirect
 from docx import Document
 import sqlite3
 
-tmp_material = {}
-tmp_material = [
-    {
-        'material_number': i,
-        'blueprint_number': i,
-        'material_name': 'new_material',
-        'note': '협의',
-        'price': 0,
-    } for i in range(1, 11)
-]
+def fetch_data():
+    conn = sqlite3.connect('material_company.db')
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM material')
+    material = cur.fetchall()
+    cur.execute('SELECT * FROM company')
+    company = cur.fetchall()
+    conn.close()
+    return material, company
 
-tmp_company = {}
-tmp_company = [
-    {
-        'company_ID': i,
-        'name': 'new_company',
-        'address': 'new_address',
-        'phone': '010-1234-5678',
-        'email': 'new_email',
-    } for i in range(1, 11)
-]
+def fetch_product():
+    connect = sqlite3.connect('material_company.db')
+    cursor = connect.cursor()
+    cursor.execute('''SELECT need.mid, bid, material.mName, description, price
+                    from need, material
+                    where need.mid = material.mid;''')
+    product = cursor.fetchall()
+    connect.close()
+    return product
 
+
+material, company = fetch_data()
+product_data = fetch_product()
+print(product_data)
 app = Flask(__name__)
 
 @app.route('/')
@@ -33,7 +35,7 @@ def main():
 
 @app.route('/main/product/')
 def product():
-    return render_template('product.html', item = tmp_material)
+    return render_template('product.html', item = product_data)
 
 @app.route('/main/order_form/')
 def order_foam():

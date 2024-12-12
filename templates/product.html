@@ -10,7 +10,7 @@
         <form action = "/main/product/" method = "POST">
             <input type = "text" name = "name">
             <select name = "category">
-                <option value = "">전체</option>
+                <option value = "0">전체</option>
                 <option value = "1">자재번호</option>
                 <option value = "2">도면번호</option>
                 <option value = "3">자재명</option>
@@ -24,17 +24,17 @@
                     <th>도면번호</th>
                     <th>자재명</th>
                     <th>비고</th>
-                    <th>수량</th>
+                    <th>가격</th>
                     </tr>
             </thead>
             <tbody>
                 {% for item in item %}
                 <tr>
-                    <td>{{  item.material_number  }}</td>
-                    <td>{{  item.blueprint_number  }}</td>
-                    <td>{{  item.material_name  }}</td>
-                    <td>{{  item.note  }}</td>
-                    <td>{{  item.price  }}</td>
+                    <td>{{  item[0]  }}</td>
+                    <td>{{  item[1]  }}</td>
+                    <td>{{  item[2]  }}</td>
+                    <td>{{  item[3]  }}</td>
+                    <td>{{  item[4]  }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
