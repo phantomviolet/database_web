@@ -132,6 +132,27 @@
 -- FROM material, need
 -- WHERE material.mid = need.mid;
 
-SELECT material.mid, need.bid, mName, description
-FROM material, need
-WHERE material.mid = need.mid;
+-- CREATE TABLE tmp (
+--     mid integer primary key ,
+--     mName text not null,
+--     description text,
+--     price integer not null,
+--     bid integer,
+--     FOREIGN KEY (bid) REFERENCES blueprint(bid) ON DELETE CASCADE ON UPDATE CASCADE
+-- );
+
+-- INSERT into tmp (mid, mName, description, price, bid)
+-- SELECT mid, mName, description, price, bid
+-- FROM material
+
+-- CREATE TABLE tmp (
+--     mid integer,
+--     mName text not null,
+--     description text,
+--     price integer,
+--     bid integer,
+--     PRIMARY KEY (mid),
+--     FOREIGN KEY (bid) REFERENCES blueprint(bid) ON DELETE CASCADE ON UPDATE CASCADE
+-- );
+
+-- alter table tmp rename to material;

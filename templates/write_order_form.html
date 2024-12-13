@@ -3,8 +3,93 @@
     <head>
         <title>Request Page</title>
         <meta charset="UTF-8">
+        <style>
+            @page {
+                size: A4;
+                margin: 20;
+            }
+            body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0 auto;
+                padding: 20mm;
+                box-sizing: border-box;
+            }
+            .header {
+                font-size: 50px;
+                text-align: center;
+            }
+            .info {
+                margin-top: 20px;
+                padding: 20px;
+                font-size: 20px;
+            }
+            .info-row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+            .info-row div {
+                width: 48%;
+            }
+            .info-row label {
+                font-weight: bold;
+            }
+            .table-container {
+                padding: 0 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+            }
+        </style>
     </head>
     <body>
-        <h1>Write Order Form Page</h1>
+        <div class="header">견적서</div>
+        <div class="info">
+            <div class="info-row">
+                <div>
+                    <label>견적번호:</label><br>
+                    <label>일자:</label><br>
+                    <label>상호:</label><br>
+                    <label>공사명:</label><br>
+                    <label>총액:</label>
+                </div>
+                <div style="text-align: right;">
+                    <label>본사:</label><br>
+                    <label>대표전화:</label><br>
+                    <label>FAX:</label><br>
+                </div>
+            </div>
+        </div>
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>자재번호</th>
+                    <th>도면번호</th>
+                    <th>자재명</th>
+                    <th>비고</th>
+                    <th>가격</th>
+                    </tr>
+            </thead>
+            <tbody>
+                {% for item in item %}
+                <tr>
+                    <td>{{  item[0]  }}</td>
+                    <td>{{  item[1]  }}</td>
+                    <td>{{  item[2]  }}</td>
+                    <td>{{  item[3]  }}</td>
+                    <td>{{  item[4]  }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    
     </body>
 </html>
