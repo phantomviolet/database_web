@@ -156,3 +156,9 @@
 -- );
 
 -- alter table tmp rename to material;
+
+-- select DISTINCT material.mid, blueprint.bname, material.mname, material.description, material.price
+-- from material, blueprint, need
+-- where material.bid = blueprint.bid;
+
+DROP TABLE need;

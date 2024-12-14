@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
     <head>
         <title>Request Page</title>
@@ -59,24 +59,30 @@
                     <label for="date"></label>
                     <input type="date" id="date" name="date"><br>
                     <label>상호:</label>
-                    <select>
+                    <select name="company">
                         {% for company in company %}
-                        <option value="{{ company[0] }}"></option>
-                        {%endfor%}
+                            <option value="{{ company[0] }}">{{ company[1] }}</option>
+                        {% endfor %}
                     </select><br>
                     <label>공사명:</label>
-                    <select>
+                    <select name="blueprint">
                         {% for blueprint in blueprint %}
-                        <option value="{{ construction[0] }}"></option>
-                        {%endfor%}
+                            <option value="{{ blueprint[0] }}">{{ blueprint[1] }}</option>
+                        {% endfor %}
                     </select><br>
                 </div>
                 <div style="text-align: right;">
-                    <label>본사:</label>{{ my_company[0] }}<br>
-                    <label>대표전화:</label>{{ my_company[1]}}<br>
-                    <label>FAX:</label>{{ my_company[2] }}<br>
+                    <label>본사:</label>{{ company[0][1] }}<br>
+                    <label>대표전화:</label>{{ company[0][3]}}<br>
+                    <label>FAX:</label>{{ company[0][4] }}<br>
                 </div>
             </div>
+        </div>
+        <div style="text-align: center;">
+            <form action="/main/order_form/write/" method="POST">
+                <input type="hidden" name="submit" value="submit">
+                <button type="submit">선택 완료</button>
+            </form>
         </div>
         <table border='1'>
             <thead>

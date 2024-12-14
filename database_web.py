@@ -9,8 +9,10 @@ def fetch_data():
     material = cur.fetchall()
     cur.execute('SELECT * FROM company')
     company = cur.fetchall()
+    cur.execute('SELECT * FROM blueprint')
+    blueprint = cur.fetchall()
     conn.close()
-    return material, company
+    return material, company, blueprint
 
 def fetch_product():
     connect = sqlite3.connect('material_company.db')
@@ -43,13 +45,21 @@ def fetch_search_product(category, keyword):
             SELECT mid, bid, mName, description, price
             FROM material
             WHERE mName LIKE ?;''', ('%' + keyword + '%',))
+        
+def fetch_search_material(blueprint_name):
+    connect = sqlite3.connect('material_company.db')
+    cursor = connect.cursor()
+    cursor.execute('''
+                    select DISTINCT material.mid, blueprint.bName, material.mname, material.description, material.price
+                    from material, blueprint
+                    where material.bid = blueprint.bid and m=bName = ?''', (blueprint_name))
     
     product = cursor.fetchall()
     connect.close()
     return product
 
 
-material, company = fetch_data()
+material, company, blueprint = fetch_data()
 product_data = fetch_product()
 app = Flask(__name__)
 
@@ -72,10 +82,19 @@ def product():
 def order_foam():
     return render_template('order_form.html')
 
-@app.route('/main/order_form/write/')
+@app.route('/main/order_form/write/', methods=['GET', 'POST'])
 def write():
-    # 여기에 작성
-    return render_template('write_order_form.html')
+    filter_blueprint = blueprint
+    item = []
+    
+    if request.method == 'POST':
+        submit = request.form.get('submit')
+        print(submit)
+        if submit == "submit":
+            blueprint_name = request.form["blueprint"]
+            item = fetch_search_material(blueprint_name)
+            
+    return render_template('write_order_form.html', company=company, blueprint=filter_blueprint, item=item)
 
 @app.route('/main/order_form/load/')
 def load():
