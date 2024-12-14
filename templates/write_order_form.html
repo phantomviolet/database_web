@@ -55,15 +55,26 @@
             <div class="info-row">
                 <div>
                     <label>견적번호:</label><br>
-                    <label>일자:</label><br>
-                    <label>상호:</label><br>
-                    <label>공사명:</label><br>
-                    <label>총액:</label>
+                    <label>일자:</label>
+                    <label for="date"></label>
+                    <input type="date" id="date" name="date"><br>
+                    <label>상호:</label>
+                    <select>
+                        {% for company in company %}
+                        <option value="{{ company[0] }}"></option>
+                        {%endfor%}
+                    </select><br>
+                    <label>공사명:</label>
+                    <select>
+                        {% for blueprint in blueprint %}
+                        <option value="{{ construction[0] }}"></option>
+                        {%endfor%}
+                    </select><br>
                 </div>
                 <div style="text-align: right;">
-                    <label>본사:</label><br>
-                    <label>대표전화:</label><br>
-                    <label>FAX:</label><br>
+                    <label>본사:</label>{{ my_company[0] }}<br>
+                    <label>대표전화:</label>{{ my_company[1]}}<br>
+                    <label>FAX:</label>{{ my_company[2] }}<br>
                 </div>
             </div>
         </div>

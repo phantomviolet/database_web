@@ -74,6 +74,7 @@ def order_foam():
 
 @app.route('/main/order_form/write/')
 def write():
+    # 여기에 작성
     return render_template('write_order_form.html')
 
 @app.route('/main/order_form/load/')
