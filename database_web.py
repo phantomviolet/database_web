@@ -1,6 +1,9 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from docx import Document
 import sqlite3
+
+def tmp_f(date):
+    fetch_new_orderlist(date, 'company')
 
 def fetch_data():
     conn = sqlite3.connect('material_company.db')
@@ -63,11 +66,12 @@ def fetch_search_material(blueprint_id):
     connect.close()
     return product
 
-def fetch_new_orderlist(date):
-    date = request.form['date']
+def fetch_new_orderlist(odate, cName):
     connect = sqlite3.connect('material_company.db')
     cursor = connect.cursor()
-    cursor.execute('''insert into orderlist (date) value (?)''', (date))
+    cursor.execute('''
+                    insert into orderlist (odate, cName) 
+                    values (?, ?)''', (odate, cName))
     connect.commit()
     connect.close()
 
@@ -99,6 +103,7 @@ def fetch_search_orderlist(category, keyword):
 material, company, blueprint, orderlist = fetch_data()
 product_data = fetch_product()
 app = Flask(__name__)
+app.secret_key = 'my_key'
 
 @app.route('/')
 @app.route('/main/')
@@ -119,21 +124,34 @@ def order_foam():
     return render_template('order_form.html')
 
 @app.route('/main/order_form/write/', methods=['GET', 'POST'])
-def submit():
+def write():
     filter_blueprint = blueprint
-    item = []  # item 변수를 초기화합니다.
-    print(filter_blueprint)
+    item = []
     if request.method == 'POST':
-        blueprint_id = request.form['blueprint']
-        item = fetch_search_material(blueprint_id) or []
+        action = request.form.get('action')
+        print(action)
+        if action == 'select':
+            date = request.form['date']
+            company_name = request.form.get('company')
+            blueprint_id = request.form.get('blueprint')
+            session['date'] = date
+            session['company_name'] = company_name
+            session['blueprint_id'] = blueprint_id
+            item = fetch_search_material(blueprint_id) or []
+            print(date, company_name, blueprint_id)
+        elif action == 'submit_order':
+            date = session.get('date')
+            company_name = session.get('company_name')
+            blueprint_id = session.get('blueprint_id')
+            quantities = {key: value for key, value in request.form.items() if key.startswith('6')}
+            print(date, company_name, blueprint_id, quantities)
+            print(type(date))
+            tmp_f(date)
+
+
     return render_template('write_order_form.html', company=company, blueprint=filter_blueprint, item=item)
 
-@app.route('/main/order_form/write/', methods=['GET', 'POST'])
-def write():
-    if request.method == 'POST':
-        date = request.form['date']
-        fetch_new_orderlist(date)
-        return redirect('/main/order_form/write/')
+
 @app.route('/main/order_form/load/', methods=['GET', 'POST'])
 def load():
     filter_list = orderlist

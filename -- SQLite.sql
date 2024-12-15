@@ -178,9 +178,13 @@
 --     cName text not null
 -- );
 
-insert into orderlist (odate, cName)
-VALUES  ('2021-06-01', 'A'),
-        ('2021-06-02', 'B'),
-        ('2021-06-03', 'C'),
-        ('2021-06-04', 'D'),
-        ('2021-06-05', 'E');
+-- insert into orderlist (odate, cName)
+-- VALUES  ('2021-06-01', 'A'),
+--         ('2021-06-02', 'B'),
+--         ('2021-06-03', 'C'),
+--         ('2021-06-04', 'D'),
+--         ('2021-06-05', 'E');
+
+delete
+from orderlist
+where oid = 6;
