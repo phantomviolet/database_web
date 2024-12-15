@@ -161,4 +161,26 @@
 -- from material, blueprint, need
 -- where material.bid = blueprint.bid;
 
-DROP TABLE need;
+-- select DISTINCT material.mid, blueprint.bName, material.mname, material.description, material.price
+-- from material, blueprint
+-- where material.bid = blueprint.bid and blueprint.bid = 2;
+
+-- create table orderlist (
+--     oid integer primary key autoincrement,
+--     odate text not null);
+
+-- alter table orderlist add COLUMN cName text not null;
+
+-- DROP table orderlist;
+-- create table orderlist (
+--     oid integer primary key autoincrement,
+--     odate text not null,
+--     cName text not null
+-- );
+
+insert into orderlist (odate, cName)
+VALUES  ('2021-06-01', 'A'),
+        ('2021-06-02', 'B'),
+        ('2021-06-03', 'C'),
+        ('2021-06-04', 'D'),
+        ('2021-06-05', 'E');

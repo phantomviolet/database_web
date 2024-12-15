@@ -11,8 +11,10 @@ def fetch_data():
     company = cur.fetchall()
     cur.execute('SELECT * FROM blueprint')
     blueprint = cur.fetchall()
+    cur.execute('SELECT * FROM orderlist')
+    orderlist = cur.fetchall()
     conn.close()
-    return material, company, blueprint
+    return material, company, blueprint, orderlist
 
 def fetch_product():
     connect = sqlite3.connect('material_company.db')
@@ -45,21 +47,56 @@ def fetch_search_product(category, keyword):
             SELECT mid, bid, mName, description, price
             FROM material
             WHERE mName LIKE ?;''', ('%' + keyword + '%',))
+    product = cursor.fetchall()
+    connect.close()
+    return product
         
-def fetch_search_material(blueprint_name):
+def fetch_search_material(blueprint_id):
     connect = sqlite3.connect('material_company.db')
     cursor = connect.cursor()
     cursor.execute('''
                     select DISTINCT material.mid, blueprint.bName, material.mname, material.description, material.price
                     from material, blueprint
-                    where material.bid = blueprint.bid and m=bName = ?''', (blueprint_name))
+                    where material.bid = blueprint.bid and blueprint.bid = ?''', (blueprint_id))
     
     product = cursor.fetchall()
     connect.close()
     return product
 
+def fetch_new_orderlist(date):
+    date = request.form['date']
+    connect = sqlite3.connect('material_company.db')
+    cursor = connect.cursor()
+    cursor.execute('''insert into orderlist (date) value (?)''', (date))
+    connect.commit()
+    connect.close()
 
-material, company, blueprint = fetch_data()
+def fetch_search_orderlist(category, keyword):
+    connect = sqlite3.connect('material_company.db')
+    cursor = connect.cursor()
+    
+    if category == '0':  # mid
+        cursor.execute('''
+            SELECT oid, odate, cName
+            FROM orderlist
+            WHERE oid LIKE ?;''', ('%' + keyword + '%',))
+        
+    elif category == '1':  # bid
+        cursor.execute('''
+            SELECT oid, odate, cName
+            FROM orderlist
+            WHERE odate LIKE ?;''', ('%' + keyword + '%',))
+        
+    elif category == '2':  # mName
+        cursor.execute('''
+            SELECT oid, odate, cName
+            FROM orderlist
+            WHERE cName LIKE ?;''', ('%' + keyword + '%',))
+    orderlist = cursor.fetchall()
+    connect.close()
+    return orderlist
+
+material, company, blueprint, orderlist = fetch_data()
 product_data = fetch_product()
 app = Flask(__name__)
 
@@ -74,8 +111,7 @@ def product():
     if request.method == 'POST':
         keyword = request.form['keyword']
         category = request.form['category']
-        filter_data = fetch_search_product(category, keyword)
-        
+        filter_data = fetch_search_product(category, keyword) or []
     return render_template('product.html', item = filter_data)
 
 @app.route('/main/order_form/')
@@ -83,22 +119,29 @@ def order_foam():
     return render_template('order_form.html')
 
 @app.route('/main/order_form/write/', methods=['GET', 'POST'])
-def write():
+def submit():
     filter_blueprint = blueprint
-    item = []
-    
+    item = []  # item 변수를 초기화합니다.
+    print(filter_blueprint)
     if request.method == 'POST':
-        submit = request.form.get('submit')
-        print(submit)
-        if submit == "submit":
-            blueprint_name = request.form["blueprint"]
-            item = fetch_search_material(blueprint_name)
-            
+        blueprint_id = request.form['blueprint']
+        item = fetch_search_material(blueprint_id) or []
     return render_template('write_order_form.html', company=company, blueprint=filter_blueprint, item=item)
 
-@app.route('/main/order_form/load/')
+@app.route('/main/order_form/write/', methods=['GET', 'POST'])
+def write():
+    if request.method == 'POST':
+        date = request.form['date']
+        fetch_new_orderlist(date)
+        return redirect('/main/order_form/write/')
+@app.route('/main/order_form/load/', methods=['GET', 'POST'])
 def load():
-    return render_template('load_order_form.html')
+    filter_list = orderlist
+    if request.method == 'POST':
+        keyword = request.form['keyword']
+        category = request.form['category']
+        filter_list = fetch_search_orderlist(category, keyword) or []
+    return render_template('load_order_form.html', orderlist = filter_list)
 
 if __name__ == '__main__':
     app.debug = True

@@ -48,13 +48,23 @@
                 text-align: left;
             }
         </style>
+        <script>
+            function validateForm() {
+                var date = document.getElementById('date').value;
+                if (!date) {
+                    alert("날짜를 선택해주세요.");
+                    return false;
+                }
+                return true;
+            }
+        </script>
     </head>
     <body>
         <div class="header">견적서</div>
         <div class="info">
             <div class="info-row">
                 <div>
-                    <label>견적번호:</label><br>
+                    <form action="/main/order_form/write/" method="POST" onsubmit="return validateForm()">
                     <label>일자:</label>
                     <label for="date"></label>
                     <input type="date" id="date" name="date"><br>
@@ -77,13 +87,12 @@
                     <label>FAX:</label>{{ company[0][4] }}<br>
                 </div>
             </div>
+                <div style="text-align: center;">
+                    <input type="submit" name="submit" value="선택완료">
+                </div>
+                </form>
         </div>
-        <div style="text-align: center;">
-            <form action="/main/order_form/write/" method="POST">
-                <input type="hidden" name="submit" value="submit">
-                <button type="submit">선택 완료</button>
-            </form>
-        </div>
+        <form action="/main/order_form/write/" method="POST">
         <table border='1'>
             <thead>
                 <tr>
@@ -92,6 +101,8 @@
                     <th>자재명</th>
                     <th>비고</th>
                     <th>가격</th>
+                    <th>수량</th>
+                    <th>선택</th>
                     </tr>
             </thead>
             <tbody>
@@ -102,11 +113,17 @@
                     <td>{{  item[2]  }}</td>
                     <td>{{  item[3]  }}</td>
                     <td>{{  item[4]  }}</td>
+                    <td><input type="number" name="quantity_{{ loop.index0 }}" min="0" style="width: 75%"></td>
+                    <td><input type="checkbox" name="selected_{{ loop.index0 }}" style="width: 50%"></td>
+                </tr>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
-    
+        <div style="text-align: center;">
+            <input type="submit" name="submit" value="견적서 작성">
+        </div>
+    </form>
+        <li><a href="/main/">메인 페이지</a></li>
     </body>
 </html>

@@ -1,11 +1,38 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Write Order Form Page</title>
+        <title>orderlist page</title>
         <meta charset="UTF-8">
     </head>
     <body>
-        <h1>Load Order Form Page</h1>
-        <h1>Load Order Form Page</h1>
+        <h1>Orderlist</h1>
+        <form action = "/main/order_form/load/" method = "POST">
+            <input type = "text" name = "keyword">
+            <select name = "category">
+                <option value = "0">주문번호</option>
+                <option value = "1">날짜</option>
+                <option value = "2">회사명</option>
+            </select>
+            <input type = "submit" value = "submit">
+        </form>
+        <table border='1'>
+            <thead>
+                <tr>
+                    <th>주문번호</th>
+                    <th>날짜</th>
+                    <th>회사명</th>
+                    </tr>
+            </thead>
+            <tbody>
+                {% for orderlist in orderlist %}
+                <tr>
+                    <td>{{  orderlist[0]  }}</td>
+                    <td>{{  orderlist[1]  }}</td>
+                    <td>{{  orderlist[2]  }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <li><a href="/main/">메인 페이지</a></li>
     </body>
 </html>
